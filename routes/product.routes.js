@@ -5,34 +5,41 @@ module.exports = (app) => {
 
   var router = require("express").Router();
 
-  // Create a new Product
+  // Créer un nouveau produit
   router.post(
     "/",
     // [authJwt.verifyToken],
     products.create
   );
 
-  // Retrieve all Products
+  // Récupérer tous les produits
   router.get("/", products.findAll);
 
-  // Retrieve a single Product with id
+  // Récupérer un produit avec son id
   router.get("/:id", products.findOne);
 
-  // Update a Product with id
+  // Mettre à jour un produit avec son id
   router.put(
     "/:id",
     // [authJwt.verifyToken],
     products.update
   );
 
-  // Delete a Product with id
+  // Update le stock d'un produit avec son id
+  router.put(
+    "/stock/:id",
+    // [authJwt.verifyToken],
+    products.updateStock
+  );
+
+  // Supprimer un produit avec son id
   router.delete(
     "/:id",
     // [authJwt.verifyToken],
     products.delete
   );
 
-  // Delete all Products
+  // Supprimer tous les produits
   router.delete(
     "/",
     // [authJwt.verifyToken],

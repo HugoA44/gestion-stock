@@ -3,7 +3,6 @@ const Product = db.products;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  // Validate request
   if (!req.body.title) {
     res.status(400).send({
       message: "Content can not be empty!",
@@ -11,13 +10,11 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a Product
   const product = {
     title: req.body.title,
     stock: req.body.stock,
   };
 
-  // Save Product in the database
   Product.create(product)
     .then((data) => {
       res.send(data);
@@ -40,8 +37,6 @@ exports.findAll = (req, res) => {
       ? { ...condition, stock: { [Op.gt]: 0 } }
       : { ...condition, stock: { [Op.like]: 0 } }
     : null;
-
-  // var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
   Product.findAll({ where: condition })
     .then((data) => {
@@ -85,6 +80,33 @@ exports.update = (req, res) => {
       if (num == 1) {
         res.send({
           message: "Product was updated successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot update Product with id=${id}. Maybe Product was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: "Error updating Product with id=" + id,
+      });
+    });
+};
+
+exports.updateStock = (req, res) => {
+  const id = req.params.id;
+
+  Product.update(
+    { stock: req.body.stock },
+    {
+      where: { id: id },
+    }
+  )
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Product stock was updated successfully.",
         });
       } else {
         res.send({
