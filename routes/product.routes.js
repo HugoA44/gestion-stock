@@ -25,13 +25,6 @@ module.exports = (app) => {
     products.update
   );
 
-  // Update le stock d'un produit avec son id
-  router.put(
-    "/stock/:id",
-    // [authJwt.verifyToken],
-    products.updateStock
-  );
-
   // Supprimer un produit avec son id
   router.delete(
     "/:id",

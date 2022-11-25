@@ -94,27 +94,50 @@ exports.update = (req, res) => {
     });
 };
 
-exports.updateStock = (req, res) => {
+exports.incrementStock = (req, res) => {
   const id = req.params.id;
-
-  Product.update(
-    { stock: req.body.stock },
-    {
-      where: { id: id },
-    }
-  )
+  const quantity = req.body.quantity;
+  Product.increment("stock", { by: quantity, where: { id: id } })
     .then((num) => {
-      if (num == 1) {
+      if (num[0][1] == 1) {
         res.send({
-          message: "Product stock was updated successfully.",
+          message: "Product was incremented successfully.",
         });
       } else {
         res.send({
-          message: `Cannot update Product with id=${id}. Maybe Product was not found or req.body is empty!`,
+          message: `Cannot increment Product with id=${id}. Maybe Product was not found!`,
         });
       }
     })
     .catch((err) => {
+      res.status(500).send({
+        message: "Error updating Product with id=" + id,
+      });
+    });
+};
+
+exports.decrementStock = (req, res) => {
+  const id = req.params.id;
+  const quantity = req.body.quantity;
+  // le stock ne doit pas être négatif
+  Product.decrement(
+    "stock",
+    { by: quantity, where: { id: id } },
+    { stock: { [Op.gt]: 0 } }
+  )
+    .then((num) => {
+      if (num[0][1] == 1) {
+        res.send({
+          message: "Product was decremented successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot decrement Product with id=${id}. Maybe Product was not found!`,
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
       res.status(500).send({
         message: "Error updating Product with id=" + id,
       });

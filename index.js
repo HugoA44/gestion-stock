@@ -38,6 +38,7 @@ app.get("/", (req, res) => {
 });
 
 require("./routes/product.routes.js")(app);
+require("./routes/stock.routes.js")(app);
 require("./routes/auth.routes")(app);
 
 // set port, listen for requests
