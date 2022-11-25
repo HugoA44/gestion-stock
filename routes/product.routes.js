@@ -6,7 +6,11 @@ module.exports = (app) => {
   var router = require("express").Router();
 
   // Create a new Product
-  router.post("/", [authJwt.verifyToken], products.create);
+  router.post(
+    "/",
+    // [authJwt.verifyToken],
+    products.create
+  );
 
   // Retrieve all Products
   router.get("/", products.findAll);
@@ -15,13 +19,25 @@ module.exports = (app) => {
   router.get("/:id", products.findOne);
 
   // Update a Product with id
-  router.put("/:id", [authJwt.verifyToken], products.update);
+  router.put(
+    "/:id",
+    // [authJwt.verifyToken],
+    products.update
+  );
 
   // Delete a Product with id
-  router.delete("/:id", [authJwt.verifyToken], products.delete);
+  router.delete(
+    "/:id",
+    // [authJwt.verifyToken],
+    products.delete
+  );
 
   // Delete all Products
-  router.delete("/", [authJwt.verifyToken], products.deleteAll);
+  router.delete(
+    "/",
+    // [authJwt.verifyToken],
+    products.deleteAll
+  );
 
   app.use("/api/products", router);
 };
