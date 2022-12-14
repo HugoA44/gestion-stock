@@ -3,15 +3,15 @@ const Product = db.products;
 const Op = db.Sequelize.Op;
 
 exports.create = (req, res) => {
-  if (!req.body.title) {
+  if (!req.body.id) {
     res.status(400).send({
-      message: "Content can not be empty!",
+      message: "id can not be empty!",
     });
     return;
   }
 
   const product = {
-    title: req.body.title,
+    id: req.body.id,
     stock: req.body.stock,
   };
 
@@ -28,9 +28,9 @@ exports.create = (req, res) => {
 };
 
 exports.findAll = (req, res) => {
-  const title = req.query.title;
+  const id = req.query.id;
   const stock = req.query.stock;
-  var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+  var condition = id ? { id: { [Op.like]: `%${id}%` } } : null;
 
   var condition = stock
     ? stock === "1"
@@ -100,8 +100,8 @@ exports.incrementStock = (req, res) => {
   Product.increment("stock", { by: quantity, where: { id: id } })
     .then((num) => {
       if (num[0][1] == 1) {
-        res.send({
-          message: "Product was incremented successfully.",
+        Product.findByPk(id).then((data) => {
+          res.send(data);
         });
       } else {
         res.send({
