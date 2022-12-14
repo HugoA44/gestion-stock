@@ -1,8 +1,8 @@
 module.exports = {
-  HOST: "localhost",
-  USER: "root",
-  PASSWORD: "root",
-  DB: "gestion_stock",
+  HOST: "109.234.161.196",
+  USER: "djdw4398_nodejs",
+  PASSWORD: "qva!dD!&dVgi",
+  DB: "djdw4398_stock_graphql",
   dialect: "mysql",
   pool: {
     max: 5,
