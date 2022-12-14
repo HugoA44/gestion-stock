@@ -127,8 +127,8 @@ exports.decrementStock = (req, res) => {
   )
     .then((num) => {
       if (num[0][1] == 1) {
-        res.send({
-          message: "Product was decremented successfully.",
+        Product.findByPk(id).then((data) => {
+          res.send(data);
         });
       } else {
         res.send({
